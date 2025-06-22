@@ -1,0 +1,633 @@
+/*  =============================== **
+ || CROSSWORD PUZZLE
+ ** =============================== */
+
+#crosswordWrap {
+    /* position: relative; */
+    /* border: 3px solid cyan; */
+}
+
+form#crossword {
+    text-align: center;
+    /* border: 1px solid red; */
+    /* padding: 2em; */
+}
+
+#cwGridWrap {
+    position: relative;
+}
+
+#cwGridCont {
+    position: relative;
+    display: block;
+    margin-bottom: 2em;
+    padding: 2em;
+    overflow: scroll;
+    box-sizing: content-box;
+    border-radius: 15px;
+}
+
+form#crossword table#cwGrid {
+    position: relative;
+    margin: 0 auto;
+}
+
+form#crossword table#cwGrid::after {
+    --gap: -10px;
+    content: "";
+    position: absolute;
+    display: block;
+    top: var(--gap);
+    left: var(--gap);
+    right: var(--gap);
+    bottom: var(--gap);
+    /* background: red; */
+    border: 2px solid hsl(0, 0%, 90%);
+    border-radius: 10px;
+}
+
+form#crossword .crop {
+    display: none;
+}
+
+form#crossword td {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    /* margin: 0; */
+    font-family: Dosis;
+    /* border: 1px solid cyan; */
+    /* border-radius: 2px; */
+    border-width: 2px;
+    /* background-color: hsl(200,90%,50%); */
+    border-style: solid;
+    border-color: transparent;
+    text-transform: uppercase;
+}
+
+form#crossword td::after {
+    content: "";
+    position: absolute;
+    display: block;
+    z-index: 0;
+}
+
+#cwGrid.ready .cwcell {
+    visibility: hidden;
+    /* opacity: 0.25; */
+}
+
+input[type="text"].cwcell {
+    /* visibility: hidden; */
+    /* background-color: hsl(200,90%,95%); */
+    width: 1em;
+    max-width: 1em;
+    height: 1em;
+    max-height: 1em;
+    padding: 0.25em;
+    /* background-color: hsl(0,0%,98%) !important; */
+    /* box-sizing: content-box; */
+}
+
+input[type="text"].cwcell::selection {
+    /* background: hsla(0,0%,0%,0.1); */
+    background: transparent;
+}
+
+#cwGrid input[type="text"].cwcell.show {
+    visibility: visible;
+    /* opacity: 1; */
+    /* background-color: hsl(200,90%,95%); */
+}
+
+.axis-box {
+    /* --width: 3px;
+    --style: solid;
+    --color: transparent; */
+    position: absolute;
+    display: block;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    /* border: 1px solid green; */
+    opacity: 0;
+    transition: all 0.2s ease;
+    z-index: 1;
+}
+
+
+/* .hint-btn {
+    position: absolute;
+    display: none;
+    width: 1.5em;
+    height: 1.5em;
+    background-color: var(--saga-pink);
+    color: #f5f5f5;
+    font-family: Roboto;
+    font-weight: 400;
+    box-sizing: border-box;
+    border-radius: 50%;
+    z-index: 100;
+}
+
+.hint-btn::before {
+    content: "?";
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+} */
+
+form#crossword td.active .across-box,
+form#crossword td.preview .across-box,
+form#crossword td.active .down-box,
+form#crossword td.preview .down-box,
+.across-box.active,
+.across-box.preview,
+.down-box.active,
+.down-box.preview {
+    opacity: 1;
+}
+
+
+/*  ** DOWN (VERTICAL) ** */
+
+form#crossword td.down .down-box {
+    border-left: 3px solid var(--saga-pink);
+    border-right: 3px solid var(--saga-pink);
+}
+
+form#crossword td.down.top .down-box {
+    border-top: 3px solid var(--saga-pink);
+    border-radius: 8px 8px 0 0;
+}
+
+form#crossword td.down.bottom .down-box {
+    border-bottom: 3px solid var(--saga-pink);
+    border-radius: 0 0 8px 8px;
+}
+
+
+/*  ** ACROSS (HORIZONTAL) ** */
+
+form#crossword td.across .across-box {
+    border-top: 3px solid var(--saga-pink);
+    border-bottom: 3px solid var(--saga-pink);
+}
+
+form#crossword td.across.first .across-box {
+    border-left: 3px solid var(--saga-pink);
+    border-radius: 8px 0 0 8px;
+}
+
+form#crossword td.across.last .across-box {
+    border-right: 3px solid var(--saga-pink);
+    border-radius: 0 8px 8px 0;
+}
+
+form#crossword td .axis-box.active {
+    border-color: hsl(0, 0, 80%) !important;
+    z-index: 0;
+}
+
+@media only screen and (max-width: 480px) {
+    form#crossword td .axis-box.active {
+        border-color: var(--saga-pink);
+    }
+}
+
+
+/*  ** END ** */
+
+form#crossword input[type="text"] {
+    cursor: pointer;
+    position: relative;
+    background-color: transparent;
+    color: var(--saga-pink);
+    font-family: Dosis;
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
+    border: 2px solid hsla(0, 0%, 20%, 0.1);
+    border-radius: 5px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    z-index: 2;
+}
+
+form#crossword td.correct input[type="text"] {
+    cursor: default;
+    background-color: var(--saga-pink);
+    color: white;
+    border-color: transparent;
+    /* pointer-events: none; */
+}
+
+form#crossword input[type="text"]:focus {
+    border-color: var(--saga-pink);
+    outline: none;
+    /* caret-color: var(--saga-pink); */
+    /* caret-color: hsl(0,0%,95%); */
+    caret-color: transparent;
+    box-shadow: hsla(0, 0%, 0%, 0.1);
+}
+
+ul.button-cache {
+    margin-top: 2em;
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.button-cache li {
+    display: inline-block;
+    margin-bottom: 0.5em;
+    /* border: 1px solid red; */
+}
+
+.button-cache li:last-of-type {
+    margin-bottom: 0;
+}
+
+.button-cache li.master-only {
+    display: none;
+}
+
+#crossword.master li.master-only {
+    display: inline-block;
+}
+
+.button-cache button {
+    margin-bottom: 0.5em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+#crosswordClear,
+#crosswordSubmit,
+#crosswordTest {
+    /* margin-top: 2em; */
+    background-color: transparent;
+    color: var(--saga-pink);
+    font-family: Dosis;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    line-height: 1em;
+    padding: 10px 20px;
+    border: 2px solid var(--saga-pink);
+    border-radius: 100px;
+    outline: transparent;
+}
+
+#cwHintCache {
+    /* rder: 1px solid red; */
+    width: 75%;
+    margin: 0 auto;
+    padding: 1em;
+    box-sizing: border-box;
+    border: 2px solid hsla(0, 0%, 10%, 0.1);
+    border-radius: 10px;
+}
+
+#cwHintCache h2 {
+    /* color: hsl(0,0%,10%); */
+    color: var(--saga-pink);
+    font-size: x-large;
+    margin: 0;
+}
+
+.hint-list-wrap {
+    width: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    /* border: 1px solid red; */
+    vertical-align: top;
+}
+
+.hint-list {
+    /* ol */
+    list-style-position: inside;
+    vertical-align: top;
+    width: 100%;
+    margin: 0;
+    padding-left: 0;
+    /* border: 2px solid hsl(0,0%,95%); */
+    /* border-radius: 10px; */
+}
+
+.hint-list textarea {
+    border: 2px solid hsla(0, 0%, 0%, 0.1);
+    border-radius: 5px;
+}
+
+.hint-list textarea::placeholder {
+    color: hsl(0, 0%, 75%);
+    font-weight: 300;
+    /* font-family: "Roboto Condensed"; */
+}
+
+li.cw-hint {
+    cursor: pointer;
+    color: hsl(0, 0%, 60%);
+    font-weight: 400;
+    padding: 0.5em 1em;
+    margin: 0.25em;
+    text-align: left;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    /* text-align: justify; */
+}
+
+li.cw-hint::marker {
+    /* position: absolute; */
+    color: var(--saga-pink);
+    font-family: din-condensed;
+    font-size: large;
+    vertical-align: middle;
+}
+
+li.cw-hint:focus,
+li.cw-hint.focus {
+    border-color: var(--saga-pink);
+}
+
+li.cw-hint.active {
+    border-color: hsla(0, 0%, 10%, 0.1);
+}
+
+#cwHintInput {
+    width: 75%;
+    margin: 0 auto;
+    /* border: 1px solid red; */
+    box-sizing: border-box;
+    /* list-style-position: inside; */
+    padding-left: 0;
+}
+
+#cwHintInput li {
+    margin: 2px;
+}
+
+#cwHintInput textarea {
+    width: 100%;
+    height: 4em;
+    box-sizing: border-box;
+    border: 2px solid hsl(0, 0%, 90%);
+    border-radius: 5px;
+}
+
+#cwHintInput textarea::placeholder {
+    color: hsl(0, 0%, 75%);
+    font-weight: 300;
+}
+
+@media (hover: hover) {
+    form#crossword input[type="text"]:hover {
+        /* cursor: pointer; */
+        /* border-color: var(--saga-pink); */
+        box-shadow: 1px 1px 2px hsla(0, 0%, 0%, 0.1);
+    }
+    form#crossword .button-cache input:hover,
+    form#crossword .button-cache input:focus,
+    form#crossword .button-cache button:hover,
+    form#crossword .button-cache button:focus {
+        background-color: var(--saga-pink);
+        color: white;
+    }
+    .across-box:hover,
+    .down-box:hover {
+        z-index: 1;
+    }
+    li.cw-hint:hover {
+        border-color: var(--saga-pink);
+    }
+}
+
+#cwEchoBox-wrap {
+    position: relative;
+    display: none;
+    /* mobile-only */
+    /* display: block; */
+    /* border: 1px solid red; */
+    box-sizing: border-box;
+}
+
+#cwEchoBox {
+    position: relative;
+    display: inline-block;
+    /* border: 1px solid orange; */
+    margin: 0;
+}
+
+#cwEchoBox table#cwEchoInput {
+    /* display: block; */
+    border-collapse: separate;
+}
+
+#cwEchoBox table#cwEchoInput input[type="text"] {
+    width: 1em;
+    height: 1em;
+    line-height: 1em;
+    padding: 0.5em;
+    /* border-color: red; */
+    /* border-left: none; */
+    /* border-top: none; */
+    /* border-right: none; */
+}
+
+.help-box {
+    color: #999;
+    font-weight: 400;
+    text-align: center;
+}
+
+#hintBoxTopWrap {
+    position: relative;
+    width: 50%;
+    margin: 0 auto;
+    border-radius: 10px;
+    border: 2px solid hsla(0, 0%, 10%, 0.1);
+    background-color: #f5f5f5;
+}
+
+#hintBoxTopWrap.active,
+#hintBoxTopWrap.preview {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 1em;
+    z-index: 10;
+}
+
+#hintBoxTop {
+    padding: 1em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+#hintBoxTopWrap::before {
+    content: attr(data-curr-hint);
+    --size: 0;
+    position: absolute;
+    /* display: block; */
+    top: var(--size);
+    left: var(--size);
+    right: var(--size);
+    /* bottom: var(--size); */
+    width: 100%;
+    min-height: 100%;
+    /* height: 100%; */
+    padding: 1em;
+    color: #999;
+    white-space: normal;
+    opacity: 0;
+    /* transition: 0.1s; */
+    box-sizing: border-box;
+    /* border: 1px solid red; */
+    background: hsl(0, 0%, 95%);
+    outline: 2px solid hsla(0, 0%, 10%, 0.1);
+    border-radius: inherit;
+    /* box-shadow: 0 0 10px hsla(0, 0%, 0%, 0.1); */
+    box-shadow: 0 0 10px hsla(338, 100%, 50%, 0.5);
+    z-index: -1;
+}
+
+@media (hover:hover) {
+    #hintBoxTopWrap:hover {
+        border-color: transparent;
+    }
+    #hintBoxTopWrap:hover #hintBoxTop {
+        color: transparent;
+    }
+    #hintBoxTopWrap:hover::before {
+        opacity: 1;
+        z-index: 1;
+    }
+}
+
+#mobileHintWrap {
+    --pos: 0;
+    position: fixed;
+    display: none;
+    left: var(--pos);
+    right: var(--pos);
+    bottom: var(--pos);
+    padding: 1em;
+    background-color: #f5f5f54b;
+    box-shadow: 0 0 10px hsla(0, 0%, 0%, 0.1);
+    box-sizing: border-box;
+    border: 1px solid red;
+    z-index: -1;
+}
+
+#mobileHintWrap.active {
+    display: block;
+    z-index: 2;
+}
+
+#mobileHintHelp {
+    border: 3px solid green;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #f5f5f5;
+}
+
+
+/* ------------------------------------------ **
+|| MOBILE
+** ------------------------------------------ */
+
+@media only screen and (max-width: 480px) {
+    /* form#crossword {
+        width: 100%;
+        overflow: scroll;
+    } */
+    #cwGridCont {
+        border: 2px solid hsl(0, 0%, 90%);
+        /* padding: 0; */
+        padding: 1em;
+        margin: 2em 0;
+    }
+    form#crossword table#cwGrid {
+        width: 100%;
+        overflow: scroll;
+    }
+    form#crossword table#cwGrid::after {
+        border: none;
+    }
+    #hintBoxTopWrap {
+        width: 100%;
+    }
+    /* #mobileHintWrap {
+        --pos: 0;
+        position: absolute;
+        display: block;
+        top: var(--pos);
+        left: var(--pos);
+        width: 100vw;
+        height: 100vh;
+        box-sizing: border-box;
+        border: 3px solid teal;
+        z-index: 10000;
+    } */
+    #cwHintCache {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border: none;
+    }
+    #cwHintCache h2 {
+        padding: 0.5em 0;
+    }
+    .hint-list-wrap {
+        display: block;
+        width: 100%;
+        margin-bottom: 1em;
+        overflow: hidden;
+        border: 2px solid hsla(0, 0%, 10%, 0.1);
+        border-radius: 10px;
+        transition: 0.5s;
+    }
+    .hint-list-wrap h2 {
+        position: relative;
+    }
+    .hint-list-wrap h2::after {
+        content: "+";
+        position: absolute;
+        display: inline-block;
+        top: 50%;
+        right: 0.5em;
+        width: 1em;
+        height: 1em;
+        color: hsl(0, 0%, 75%);
+        letter-spacing: 0;
+        line-height: 1em;
+        transform: translateY(-50%);
+        /* transform-origin: 100% 50%; */
+        transition: 0.1s;
+        /* background-color: hsla(0, 100%, 50%, 0.15); */
+    }
+    .hint-list-wrap.active h2::after {
+        --rotate: rotate(45deg);
+        --translate: translateY(-50%);
+        --transform: var(--translate) var(--rotate);
+        -webkit-transform: var(--transform);
+        -moz-transform: var(--transform);
+        transform: var(--transform);
+    }
+    .hint-list {
+        display: none;
+        max-height: 0;
+    }
+    .hint-list-wrap.active .hint-list {
+        display: block;
+        max-height: none;
+    }
+}

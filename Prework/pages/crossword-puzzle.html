@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Puzzle | Julian</title>
+    <link rel="stylesheet" type="text/css" href="../styles/index.css">
+    <link rel="stylesheet" type="text/css" href="../styles/crossword.css">
+
+    <!-- <link rel="stylesheet" href="./index-mobile.css"> -->
+</head>
+
+<body>
+    <nav id="mainNav" class="norm">
+        <ul id="mainNavList">
+            <li>Home</li>
+            <li><a href="pages/about.html" target="_self">About</a></li>
+        </ul>
+    </nav>
+    <main>
+        <div id="crosswordWrap">
+
+            <form id="crossword" {.if masterMode}class="master" {.end}>
+                <div id="cwGridWrap">
+                    <!-- HINT HELP BOX -->
+                    <div id="hintBoxTopWrap" class="help-box active">
+                        <div id="hintBoxTop"></div>
+                    </div>
+
+                    <div id="cwGridCont">
+
+                        <!-- THE PUZZLE GRID WHERE THE MAGIC HAPPENS -->
+                        <table id="cwGrid"></table>
+                    </div>
+                </div>
+
+                <!-- BUTTON CACHE -->
+                <ul class="button-cache">
+                    <li><button id="crosswordClear" type="button" value="Clear">Clear</button></li>
+                    <li class="master-only"><button id="crosswordTest" type="button" value="Test">Test</button></li>
+                    <li><button id="crosswordSubmit" type="button" value="Submit">Submit</button></li>
+                </ul>
+
+                <!-- HINT BOX -->
+                <div id="cwHintCache" class="test">
+                    <div class="hint-list-wrap across">
+                        <h2>Across</h2>
+                        <ol id="cwHintAcross" class="hint-list"></ol>
+                    </div>
+                    <div class="hint-list-wrap down">
+                        <h2>Down</h2>
+                        <ol id="cwHintDown" class="hint-list"></ol>
+                    </div>
+                </div>
+
+                <!-- HINT INPUT (Master Only) -->
+                <ol id="cwHintInput"></ol>
+
+            </form>
+            <div id="mobileHintWrap">
+                <div id="mobileHintHelp" class="help-box"></div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="../scripts/crossword.js"></script>
+
+    </main>
+</body>
